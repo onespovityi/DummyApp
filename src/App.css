@@ -43,10 +43,6 @@ button {
   transition: background-color 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3;
-}
-
 input, textarea {
   padding: 10px;
   border: 1px solid #ddd;
@@ -56,5 +52,4 @@ input, textarea {
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: #007bff;
 }

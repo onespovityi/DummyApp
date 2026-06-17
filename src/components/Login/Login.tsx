@@ -41,7 +41,7 @@ export const Login = () => {
               className={styles.closeButton}
               onClick={closeModal}
             >
-              ×
+              ✕
             </button>
 
             <h2 className={styles.modalTitle}>Авторизация</h2>
@@ -61,6 +61,9 @@ export const Login = () => {
                 onChange={(event) => setPassword(event.target.value)}
                 className={styles.input}
               />
+              <label className={styles.checkboxLabel}>
+                <input type="checkbox" name="rememberMe" /> Запомнить меня
+              </label>
 
               <button type="submit" className={styles.submitButton}>
                 Войти

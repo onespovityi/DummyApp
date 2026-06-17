@@ -29,3 +29,31 @@ export const loginUser = async ({
 
   return response.json();
 };
+
+export const refreshSession = async () => {
+  const response = await fetch("https://dummyjson.com/auth/refresh", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ expiresInMins: 30 }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Сессия не найдена");
+  }
+
+  return response.json();
+};
+
+export const getCurrentUser = async (accessToken: string) => {
+  const response = await fetch("https://dummyjson.com/auth/me", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Не авторизован");
+  }
+
+  return response.json();
+};
