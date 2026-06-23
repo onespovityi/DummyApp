@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import { loginUser } from "../../api/auth";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { InputText } from "primereact/inputtext";
 
 export const Login = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -47,27 +50,25 @@ export const Login = () => {
             <h2 className={styles.modalTitle}>Авторизация</h2>
 
             <form className={styles.form} onSubmit={handleSubmit}>
-              <input
+              <InputText
                 placeholder="username"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 className={styles.input}
               />
 
-              <input
-                type="password"
-                placeholder="Пароль"
+              <Password
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className={styles.input}
+                onChange={(e) => setPassword(e.target.value)}
+                feedback={false}
+                tabIndex={1}
+                inputClassName={styles.input}
               />
               <label className={styles.checkboxLabel}>
                 <input type="checkbox" name="rememberMe" /> Запомнить меня
               </label>
 
-              <button type="submit" className={styles.submitButton}>
-                Войти
-              </button>
+              <Button label="Войти" className={styles.submitButton} />
             </form>
           </div>
         </div>
