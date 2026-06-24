@@ -46,6 +46,11 @@ export const refreshSession = async () => {
 };
 
 export const getCurrentUser = async (accessToken: string) => {
+
+  if (!accessToken) {
+    throw new Error("Не авторизован");
+  }
+
   const response = await fetch("https://dummyjson.com/auth/me", {
     headers: { Authorization: `Bearer ${accessToken}` },
     credentials: "include",

@@ -4,15 +4,17 @@ import { loginUser } from "../../api/auth";
 import { Button } from "primereact/button";
 import { Password } from "primereact/password";
 import { InputText } from "primereact/inputtext";
+import { Checkbox, type CheckboxChangeEvent } from "primereact/checkbox";
+import { useAppDispatch, useAppSelector } from "../../store/app/hooks";
+import { setToken } from "../../store/auth/authSlice";
 
 export const Login = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [email, setEmail] = useState("emilys");
-  const [password, setPassword] = useState("emilyspass");
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state) => state.auth.token);
+  const isOpen = !token;
+  const [email, setEmail] = useState<string>("emilys");
+  const [password, setPassword] = useState<string>("emilyspass");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,30 +25,27 @@ export const Login = () => {
         password,
       });
 
-      console.log(data);
+      const storageKey = rememberMe ? localStorage : sessionStorage;
+      storageKey.setItem("accessToken", data.accessToken);
 
-      closeModal();
+      dispatch(setToken(data.accessToken));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const onRememberMeChange = (event: CheckboxChangeEvent): void => {
+    setRememberMe(!!event.checked);
+  };
+
   return (
     <>
       {isOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
+        <div className={styles.modalOverlay}>
           <div
             className={styles.modalContent}
             onClick={(event) => event.stopPropagation()}
           >
-            <button
-              type="button"
-              className={styles.closeButton}
-              onClick={closeModal}
-            >
-              ✕
-            </button>
-
             <h2 className={styles.modalTitle}>Авторизация</h2>
 
             <form className={styles.form} onSubmit={handleSubmit}>
@@ -63,12 +62,26 @@ export const Login = () => {
                 feedback={false}
                 tabIndex={1}
                 inputClassName={styles.input}
+                toggleMask
               />
-              <label className={styles.checkboxLabel}>
-                <input type="checkbox" name="rememberMe" /> Запомнить меня
-              </label>
+              <div className={styles.checkboxLabel}>
+                <Checkbox
+                  inputId="rememberMe"
+                  name="rememberMe"
+                  value="rememberMe"
+                  onChange={onRememberMeChange}
+                  checked={rememberMe}
+                />
+                <label htmlFor="rememberMe" className="ml-2">
+                  Запомнить меня
+                </label>
+              </div>
 
-              <Button label="Войти" className={styles.submitButton} />
+              <Button
+                disabled={!email || !password}
+                label="Войти"
+                className={styles.submitButton}
+              />
             </form>
           </div>
         </div>
