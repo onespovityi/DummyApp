@@ -16,8 +16,8 @@ export const Login = () => {
   const [password, setPassword] = useState<string>("emilyspass");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     try {
       const data = await loginUser({
@@ -34,8 +34,8 @@ export const Login = () => {
     }
   };
 
-  const onRememberMeChange = (event: CheckboxChangeEvent): void => {
-    setRememberMe(!!event.checked);
+  const onRememberMeChange = (e: CheckboxChangeEvent): void => {
+    setRememberMe(!!e.checked);
   };
 
   return (
@@ -44,7 +44,7 @@ export const Login = () => {
         <div className={styles.modalOverlay}>
           <div
             className={styles.modalContent}
-            onClick={(event) => event.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <h2 className={styles.modalTitle}>Авторизация</h2>
 
@@ -52,16 +52,12 @@ export const Login = () => {
               <InputText
                 placeholder="username"
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                className={styles.input}
+                onChange={(e) => setEmail(e.target.value)}
               />
 
               <Password
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                feedback={false}
-                tabIndex={1}
-                inputClassName={styles.input}
                 toggleMask
               />
               <div className={styles.checkboxLabel}>
