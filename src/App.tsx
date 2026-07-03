@@ -5,6 +5,7 @@ import "primereact/resources/themes/lara-light-cyan/theme.css";
 import "primeicons/primeicons.css";
 import { MainPage } from "./components/MainPage/MainPage";
 import { useAppSelector } from "./store/app/hooks";
+import { ToastProvider } from "./components/ui/Toast/Toast";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -12,7 +13,7 @@ function App() {
   return (
     <div className="App">
       <PrimeReactProvider>
-        {token ? <MainPage /> : <Login />}
+        <ToastProvider>{token ? <MainPage /> : <Login />}</ToastProvider>
       </PrimeReactProvider>
     </div>
   );

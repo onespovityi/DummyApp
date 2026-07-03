@@ -7,6 +7,7 @@ import { InputText } from "primereact/inputtext";
 import { Checkbox, type CheckboxChangeEvent } from "primereact/checkbox";
 import { useAppDispatch, useAppSelector } from "../../store/app/hooks";
 import { setToken } from "../../store/auth/authSlice";
+import { useToast } from "../../hook/useToast";
 
 export const Login = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +16,7 @@ export const Login = () => {
   const [email, setEmail] = useState<string>("emilys");
   const [password, setPassword] = useState<string>("emilyspass");
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const showToast = useToast();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,9 +29,10 @@ export const Login = () => {
 
       const storageKey = rememberMe ? localStorage : sessionStorage;
       storageKey.setItem("accessToken", data.accessToken);
-
+      showToast("success", "Авторизация прошла успешно");
       dispatch(setToken(data.accessToken));
     } catch (error) {
+      showToast("error", "Ошибка авторизации");
       console.log(error);
     }
   };
